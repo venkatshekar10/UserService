@@ -19,6 +19,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/test")
+    public String home() {
+        return "Application Working";
+    }
+
+
     @PostMapping("/register")
     public SignUpResponseDTO signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
         User user = userService.signUp(signUpRequestDTO.getName(),
