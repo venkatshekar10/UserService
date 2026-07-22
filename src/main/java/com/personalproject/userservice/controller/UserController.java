@@ -56,13 +56,17 @@ public class UserController {
     }
 
     @GetMapping("/validate/{tokenValue}")
-    public ResponseEntity<Boolean> validateToken(@PathVariable("tokenValue") String tokenValue) {
+    public ResponseEntity<TokenValidationResponseDTO> validateToken(@PathVariable("tokenValue") String tokenValue) {
         User user = userService.validateToken(tokenValue);
-        ResponseEntity<Boolean> responseEntity;
-        if(user == null) {
-            responseEntity = new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+        TokenValidationResponseDTO responseDTO;
+        ResponseEntity<TokenValidationResponseDTO> responseEntity;
+
+        if (user == null) {
+            responseDTO = new TokenValidationResponseDTO(false, null);
+            responseEntity = new ResponseEntity<>(responseDTO, HttpStatus.UNAUTHORIZED);
         } else {
-            responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
+            responseDTO = new TokenValidationResponseDTO(true, user.getId());
+            responseEntity = new ResponseEntity<>(responseDTO, HttpStatus.OK);
         }
         return responseEntity;
     }
